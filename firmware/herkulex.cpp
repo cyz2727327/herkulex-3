@@ -24,7 +24,7 @@
  IMPORTANT:
 
   The library works on Arduino UNO/2009 - Arduino Mega.
-  Please with Arduino UNO/2009 works with SoftwareSerial library modified with baud rate 57.600.
+  Please with Arduino UNO/2009 works with SoftwareSerial1 library modified with baud rate 57.600.
   Use this begin type:
 		begin(57600, int rx, int tx);
  
@@ -39,47 +39,47 @@
 #include "herkulex.h"
 
 
-// Macro for the Serial port selection
-//#define HSerial1     1 		// Write in Serial 1 port Arduino Mega - Pin 19(rx) - 18 (tx) 
-//#define HSerial2     2   	// Write in Serial 2 port Arduino Mega - Pin 17(rx) - 16 (tx) 
-//#define HSerial3     3   	// Write in Serial 3 port Arduino Mega - Pin 15(rx) - 14 (tx)
-//#define SSerial      4   	// Write in SoftSerial Arduino with 328p or Mega
+// Macro for the Serial1 port selection
+//#define HSerial11     1 		// Write in Serial1 1 port Arduino Mega - Pin 19(rx) - 18 (tx) 
+//#define HSerial12     2   	// Write in Serial1 2 port Arduino Mega - Pin 17(rx) - 16 (tx) 
+//#define HSerial13     3   	// Write in Serial1 3 port Arduino Mega - Pin 15(rx) - 14 (tx)
+//#define SSerial1      4   	// Write in SoftSerial1 Arduino with 328p or Mega
  
-//extern SoftwareSerial SwSerial(0, 1);
+//extern SoftwareSerial1 SwSerial1(0, 1);
 
 // Herkulex begin with Arduino Uno
 void HerkulexClass::begin(long baud)
 {
-	Serial.begin(baud);
+	Serial1.begin(baud);
 }
 
 //#if defined (__AVR_ATmega1280__) || defined (__AVR_ATmega128__) || defined (__AVR_ATmega2560__)
-// Herkulex begin with Arduino Mega - Serial 1
-//void HerkulexClass::beginSerial1(long baud)
+// Herkulex begin with Arduino Mega - Serial1 1
+//void HerkulexClass::beginSerial11(long baud)
 //{
-//	Serial1.begin(baud);
-//	port = HSerial1;
+//	Serial11.begin(baud);
+//	port = HSerial11;
 //}
 
-// Herkulex begin with Arduino Mega - Serial 2
-//void HerkulexClass::beginSerial2(long baud)
+// Herkulex begin with Arduino Mega - Serial1 2
+//void HerkulexClass::beginSerial12(long baud)
 //{
-//	Serial2.begin(baud);
-//	port=HSerial2;
+//	Serial12.begin(baud);
+//	port=HSerial12;
 //}
 
-// Herkulex begin with Arduino Mega - Serial 3
-//void HerkulexClass::beginSerial3(long baud)
+// Herkulex begin with Arduino Mega - Serial1 3
+//void HerkulexClass::beginSerial13(long baud)
 //{
-//	Serial3.begin(baud);
-//	port = HSerial3;
+//	Serial13.begin(baud);
+//	port = HSerial13;
 //}
 //#endif
 
 // Herkulex end
 void HerkulexClass::end()
 {
-	Serial.end();
+	Serial1.end();
 }
 
 // initialize servos
@@ -118,7 +118,7 @@ byte HerkulexClass::stat(int servoID)
 	     
 	sendData(dataEx, pSize);
 	delay(2);
-	readData(9); 				// read 9 bytes from serial
+	readData(9); 				// read 9 bytes from Serial1
 
 	
 	pSize = dataEx[2];           // 3.Packet size 7-58
@@ -848,51 +848,51 @@ void HerkulexClass::addData(int GoalLSB, int GoalMSB, int set, int servoID)
   moveData[conta++]=servoID;
 }
 
-// Sending the buffer long lenght to Serial port
+// Sending the buffer long lenght to Serial1 port
 void HerkulexClass::sendData(byte* buffer, int lenght)
 {
-		clearBuffer(); 		//clear the serialport buffer - try to do it!
-        Serial.write(buffer, lenght);
+		clearBuffer(); 		//clear the Serial1port buffer - try to do it!
+        Serial11.write(buffer, lenght);
 		delay(1);
 
 //		switch (port)
 //		{
-//			case SSerial:
-//						SwSerial.write(buffer, lenght);
+//			case SSerial1:
+//						SwSerial1.write(buffer, lenght);
 //						delay(1);
 	//					break;
 		//	#if defined (__AVR_ATmega1280__) || defined (__AVR_ATmega128__) || defined (__AVR_ATmega2560__)
-			//case HSerial1:
-				//Serial1.write(buffer, lenght);
+			//case HSerial11:
+				//Serial11.write(buffer, lenght);
 //				delay(1);
 //				break;
-//			case HSerial2:
-//				Serial2.write(buffer, lenght);
+//			case HSerial12:
+//				Serial12.write(buffer, lenght);
 //				delay(1);
 //				break;
-//			case HSerial3:
-//				Serial3.write(buffer, lenght);
+//			case HSerial13:
+//				Serial13.write(buffer, lenght);
 //				delay(1);
 //				break;
 //			#endif
 		}
 
 
-// * Receiving the lenght of bytes from Serial port
+// * Receiving the lenght of bytes from Serial1 port
 void HerkulexClass::readData(int size)
 {
 	int i = 0;
     int beginsave=0;
     int Time_Counter=0;
     
-	while((Serial.available() < size) & (Time_Counter < TIME_OUT)){
+	while((Serial11.available() < size) & (Time_Counter < TIME_OUT)){
         		Time_Counter++;
         		delayMicroseconds(1000);  //wait 1 millisecond for 10 times
 		}
         	
-	while (Serial.available() > 0){
-			byte inchar = (byte)Serial.read();
-			if ( (inchar == 0xFF) & ((byte)Serial.peek() == 0xFF) ){
+	while (Serial11.available() > 0){
+			byte inchar = (byte)Serial11.read();
+			if ( (inchar == 0xFF) & ((byte)Serial11.peek() == 0xFF) ){
 					beginsave=1; 
 					i=0; 				 // if found new header, begin again
 			}
@@ -904,12 +904,12 @@ void HerkulexClass::readData(int size)
 }
 }
 
-//clear buffer in the serial port - better - try to do this
+//clear buffer in the Serial1 port - better - try to do this
 void HerkulexClass::clearBuffer()
 {
-                Serial.flush();
-                while(Serial.available()){
-					Serial.read();
+                Serial1.flush();
+                while(Serial1.available()){
+					Serial1.read();
 					delayMicroseconds(200);
 				}
                 
@@ -920,12 +920,12 @@ void HerkulexClass::clearBuffer()
 
 void HerkulexClass::printHexByte(byte x)
 {
-  Serial.print("0x");
+  Serial1.print("0x");
   if (x < 16) {
-    Serial.print('0');
+    Serial1.print('0');
   }
-    Serial.print(x, HEX);
-    Serial.print(" ");
+    Serial1.print(x, HEX);
+    Serial1.print(" ");
 
 }
 
