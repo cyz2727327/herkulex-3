@@ -40,7 +40,7 @@
 
 
 // Macro for the Serial1 port selection
-//#define HSerial11     1 		// Write in Serial1 1 port Arduino Mega - Pin 19(rx) - 18 (tx) 
+//#define HSerial1     1 		// Write in Serial1 1 port Arduino Mega - Pin 19(rx) - 18 (tx) 
 //#define HSerial12     2   	// Write in Serial1 2 port Arduino Mega - Pin 17(rx) - 16 (tx) 
 //#define HSerial13     3   	// Write in Serial1 3 port Arduino Mega - Pin 15(rx) - 14 (tx)
 //#define SSerial1      4   	// Write in SoftSerial1 Arduino with 328p or Mega
@@ -55,10 +55,10 @@ void HerkulexClass::begin(long baud)
 
 //#if defined (__AVR_ATmega1280__) || defined (__AVR_ATmega128__) || defined (__AVR_ATmega2560__)
 // Herkulex begin with Arduino Mega - Serial1 1
-//void HerkulexClass::beginSerial11(long baud)
+//void HerkulexClass::beginSerial1(long baud)
 //{
-//	Serial11.begin(baud);
-//	port = HSerial11;
+//	Serial1.begin(baud);
+//	port = HSerial1;
 //}
 
 // Herkulex begin with Arduino Mega - Serial1 2
@@ -852,7 +852,7 @@ void HerkulexClass::addData(int GoalLSB, int GoalMSB, int set, int servoID)
 void HerkulexClass::sendData(byte* buffer, int lenght)
 {
 		clearBuffer(); 		//clear the Serial1port buffer - try to do it!
-        Serial11.write(buffer, lenght);
+        Serial1.write(buffer, lenght);
 		delay(1);
 
 //		switch (port)
@@ -862,8 +862,8 @@ void HerkulexClass::sendData(byte* buffer, int lenght)
 //						delay(1);
 	//					break;
 		//	#if defined (__AVR_ATmega1280__) || defined (__AVR_ATmega128__) || defined (__AVR_ATmega2560__)
-			//case HSerial11:
-				//Serial11.write(buffer, lenght);
+			//case HSerial1:
+				//Serial1.write(buffer, lenght);
 //				delay(1);
 //				break;
 //			case HSerial12:
@@ -885,14 +885,14 @@ void HerkulexClass::readData(int size)
     int beginsave=0;
     int Time_Counter=0;
     
-	while((Serial11.available() < size) & (Time_Counter < TIME_OUT)){
+	while((Serial1.available() < size) & (Time_Counter < TIME_OUT)){
         		Time_Counter++;
         		delayMicroseconds(1000);  //wait 1 millisecond for 10 times
 		}
         	
-	while (Serial11.available() > 0){
-			byte inchar = (byte)Serial11.read();
-			if ( (inchar == 0xFF) & ((byte)Serial11.peek() == 0xFF) ){
+	while (Serial1.available() > 0){
+			byte inchar = (byte)Serial1.read();
+			if ( (inchar == 0xFF) & ((byte)Serial1.peek() == 0xFF) ){
 					beginsave=1; 
 					i=0; 				 // if found new header, begin again
 			}
